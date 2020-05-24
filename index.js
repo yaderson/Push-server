@@ -35,7 +35,7 @@ app.post('/Push',(req, res) => {
     res.send(notify)
 })
 
-const port  = process.env.port || 3000
+const port  = process.env.PORT || 80
 
 app.listen(port, ()=> {
     console.log(`App is running on PORT ${port}`)
