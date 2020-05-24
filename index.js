@@ -24,6 +24,12 @@ app.get('/key', (req, res) => {
     res.send(key)
 })
 
+app.get('/Users', (req, res) => {
+    const Users = push.getAllSuscribeUsers()
+    console.log(Users)
+    res.json(Users)
+})
+
 app.post('/Push',(req, res) => {
     const body = req.body
     const notify = {

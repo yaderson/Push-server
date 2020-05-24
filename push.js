@@ -28,3 +28,7 @@ module.exports.sendPush = function (post) {
         console.log('SEND')
     })
 }
+
+module.exports.getAllSuscribeUsers = function () {
+    return db
+}
