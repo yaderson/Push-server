@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -e '*.js' --ignore '*.json' index.js",
-    "generate-vapid": "npx web-push generate-vapid-keys --json > vapid.json"
+    "generate-vapid": "npx web-push generate-vapid-keys --json > vapid.json",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
