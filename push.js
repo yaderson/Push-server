@@ -41,7 +41,7 @@ async function sendPush () {
         const res = await Result.json()
 
         subs.rows.forEach((subscriber, i) => {
-            console.log(subscriber)
+            
 
             const data = res.Countries.find(element => element.Slug === subscriber.pushcondition)
             
@@ -52,8 +52,8 @@ async function sendPush () {
                     user: 'None',
                     slug: data.Slug
                 }
-
-                webpush.sendNotification(subscriber.subscriptionobject, JSON.stringify(notify))
+                console.log(subscriber.subscriptionobject)
+                webpush.sendNotification(JSON.stringify(subscriber.subscriptionobject), JSON.stringify(notify))
                 .then((res) => {
                     console.log('Complete',res)
                 })
