@@ -52,11 +52,12 @@ async function sendPush () {
                 slug: data.Slug
             }
 
-            webpush.sendNotification(subscription, JSON.stringify(subscriber.subscriptionobject))
+            webpush.sendNotification(subscriber.subscriptionobject, JSON.stringify(notify))
             console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
-            return 0
+            return true
         }else {
             console.log('Failed to send push...')
+            return true
         }
     })
 }
@@ -71,7 +72,7 @@ function getKey () {
     return urlsafeBase64.decode(vapid.publicKey)
 }
 async function create () {
-    const result = await pool.query('DELETE FROM subs *')
+    const result = await pool.query(queries.tableSubs)
     return result
 }
 module.exports = {
