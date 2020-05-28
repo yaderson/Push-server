@@ -2,8 +2,7 @@ const vapid = require('./vapid.json')
 const webpush = require('web-push')
 const urlsafeBase64 = require('urlsafe-base64')
 const fs = require('fs')
-const Pool = require('pg').Pool
-
+const fetch = require('node-fetch');
 const pool = require('./pool')
 
 
