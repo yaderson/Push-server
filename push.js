@@ -35,31 +35,35 @@ async function addSubscription (subscription, condition) {
 }
 
 async function sendPush () {
-    const subs = await pool.query('SELECT * FROM subs')
-    const Result = await fetch('https://api.covid19api.com/summary')
-    const res = await Result.json()
+    try {
+        const subs = await pool.query('SELECT * FROM subs')
+        const Result = await fetch('https://api.covid19api.com/summary')
+        const res = await Result.json()
 
-    subs.rows.forEach((subscriber, i) => {
-        console.log(subscriber)
+        subs.rows.forEach((subscriber, i) => {
+            console.log(subscriber)
 
-        const data = res.find(element => element.Slug === subscriber.pushcondition)
-        
-        if(data){
-            const notify = {
-                title: `New Update For ${data.Country}`,
-                body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
-                user: 'None',
-                slug: data.Slug
+            const data = res.find(element => element.Slug === subscriber.pushcondition)
+            
+            if(data){
+                const notify = {
+                    title: `New Update For ${data.Country}`,
+                    body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
+                    user: 'None',
+                    slug: data.Slug
+                }
+
+                webpush.sendNotification(subscriber.subscriptionobject, JSON.stringify(notify))
+                console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
+            }else {
+                console.log('Failed to send push...')
             }
+        })
 
-            webpush.sendNotification(subscriber.subscriptionobject, JSON.stringify(notify))
-            console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
-            return true
-        }else {
-            console.log('Failed to send push...')
-            return true
-        }
-    })
+        return true
+    }catch (err) {
+        console.log(err)
+    }
 }
 
 async function getAllSuscribeUsers () {
