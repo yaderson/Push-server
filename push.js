@@ -54,7 +54,13 @@ async function sendPush () {
                 }
 
                 webpush.sendNotification(subscriber.subscriptionobject, JSON.stringify(notify))
-                console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
+                .then((res) => {
+                    console.log('Complete',res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                //console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
             }else {
                 console.log('Failed to send push...')
             }
