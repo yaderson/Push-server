@@ -52,8 +52,8 @@ async function sendPush () {
                     user: 'None',
                     slug: data.Slug
                 }
-                console.log(subscriber.subscriptionobject)
-                webpush.sendNotification(JSON.stringify(subscriber.subscriptionobject), JSON.stringify(notify))
+                console.log(JSON.parse(subscriber.subscriptionobject))
+                webpush.sendNotification(JSON.parse(subscriber.subscriptionobject), JSON.stringify(notify))
                 .then((res) => {
                     console.log('Complete',res)
                 })
