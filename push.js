@@ -36,12 +36,12 @@ async function addSubscription (subscription, condition) {
 
 async function sendPush () {
     const subs = await pool.query('SELECT * FROM subs')
-    console.log(subs)
     const Result = await fetch('https://api.covid19api.com/summary')
     const res = await Result.json()
 
     subs.rows.forEach((subscriber, i) => {
-
+        console.log(subscriber)
+        
         const data = res.find(element => element.Slug === subscriber.pushcondition)
         
 
