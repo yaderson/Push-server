@@ -40,7 +40,7 @@ async function sendPush (post) {
     const Result = await fetch('https://api.covid19api.com/summary')
     const res = await Result.json()
     res.Countries.forEach((result) => {
-        console.log(result)
+        //console.log(result)
     })
 
     // db.forEach((subscription, i) => {
