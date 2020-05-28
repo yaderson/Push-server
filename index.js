@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const push = require('./push.js')
+const { getKey, addSubscription, getAllSuscribeUsers } = require('./push.js')
 
 const app = express()
 
@@ -10,36 +10,58 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Suscribe an user 
-app.post('/Subscribe', (req, res) => {
-    const sub = req.body
-    res.send('ok')
-    push.addSubscription(sub)
-    console.log(JSON.stringify(sub))
+app.post('/Subscribe', async (req, res) => {
+    try {
+        const {sub, condition} = req.body
+        const response = await addSubscription(sub,condition)
+        res.json({
+            ok: true
+        })
+    } catch (err) {
+        res.status(500)
+        console.log(err.detail)
+        if(err.routine === 'ExecConstraints') {
+            return res.json({
+                ok: false,
+                msg: 'Subscription is Already exist',
+                err: err
+            })
+        }
+        res.json({
+            ok: false,
+            msg: 'Server error',
+            err: err
+        })
+    }
 })
 
 //Get key
 app.get('/key', (req, res) => {
-    const key = push.getKey()
+    const key = getKey()
     console.log(`Consulta ${key}`)
     res.send(key)
 })
 
-app.get('/Users', (req, res) => {
-    const Users = push.getAllSuscribeUsers()
-    console.log(Users)
-    res.json(Users)
+app.get('/Users', async (req, res) => {
+    try {
+        const Users = await getAllSuscribeUsers() 
+        console.log(Users)
+        res.json(Users)
+    } catch (err) {
+        res.status(500)
+    }
 })
 
-app.post('/Push',(req, res) => {
-    const body = req.body
-    const notify = {
-        title: body.title,
-        body: body.body,
-        user: body.user
-    }
-    push.sendPush(notify)
-    res.send(notify)
-})
+// app.post('/Push',(req, res) => {
+//     const body = req.body
+//     const notify = {
+//         title: body.title,
+//         body: body.body,
+//         user: body.user
+//     }
+//     push.sendPush(notify)
+//     res.send(notify)
+// })
 
 const port  = process.env.PORT || 80
 

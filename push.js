@@ -1,34 +1,60 @@
 const vapid = require('./vapid.json')
-const fs = require('fs')
 const webpush = require('web-push')
+const urlsafeBase64 = require('urlsafe-base64')
 
+const Pool = require('pg').Pool
+
+const pool = require('./pool')
+
+
+//Create pg tables 
+// const queries = {
+//     tableSubs: `
+//         CREATE TABLE IF NOT EXISTS subs(
+//             subscriptionObject text NOT NULL PRIMARY KEY,
+//             pushCondition text NOT NULL
+//         );
+//     `
+// }
+
+//Config vapid
 webpush.setVapidDetails(
     'mailto:example@yourdomain.org',
     vapid.publicKey,
     vapid.privateKey
 );
 
-urlsafeBase64 = require('urlsafe-base64')
 
-const db = require('./subs-db.json')
 
-module.exports.getKey = function() {
-    return urlsafeBase64.decode(vapid.publicKey)
+function createDb () {
+    console.log(pool)
 }
 
-module.exports.addSubscription = function (subscription) {
-    db.push(subscription)
-    fs.writeFileSync(`${__dirname}/subs-db.json`, JSON.stringify(db))
-    return 0
+async function addSubscription (subscription, condition) {
+    const result = await pool.query('INSERT INTO subs (subscriptionObject, pushCondition) VALUES($1, $2)',[subscription, condition])
+    return result
 }
 
-module.exports.sendPush = function (post) {
+function sendPush (post) {
     db.forEach((subscription, i) => {
         webpush.sendNotification(subscription, JSON.stringify(post))
         console.log('SEND')
     })
 }
 
-module.exports.getAllSuscribeUsers = function () {
-    return db
+async function getAllSuscribeUsers () {
+    const result = await pool.query('SELECT * FROM subs')
+    return result.rows
+}
+
+
+function getKey () {
+    return urlsafeBase64.decode(vapid.publicKey)
+}
+
+module.exports = {
+    createDb,
+    getKey,
+    addSubscription,
+    getAllSuscribeUsers
 }
