@@ -41,20 +41,23 @@ async function sendPush () {
 
     subs.rows.forEach((subscriber, i) => {
         console.log(subscriber)
-        
+
         const data = res.find(element => element.Slug === subscriber.pushcondition)
         
+        if(data){
+            const notify = {
+                title: `New Update For ${data.Country}`,
+                body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
+                user: 'None',
+                slug: data.Slug
+            }
 
-        const notify = {
-            title: `New Update For ${data.Country}`,
-            body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
-            user: 'None',
-            slug: data.Slug
+            webpush.sendNotification(subscription, JSON.stringify(subscriber.subscriptionobject))
+            console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
+            return 0
+        }else {
+            console.log('Failed to send push...')
         }
-
-        webpush.sendNotification(subscription, JSON.stringify(subscriber.subscriptionobject))
-        console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
-        return 0
     })
 }
 
