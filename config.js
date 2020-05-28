@@ -1,1 +1,1 @@
-process.env.DATABASE_POSTGRES = 'postgres://notigwcnqrepgs:c5a77c2bc47a3836c8e63c0d1a2df5e652f333776ff1ec79af780021d73213f0@ec2-52-87-58-157.compute-1.amazonaws.com:5432/d9pap1thvs0547?ssl=true'
+process.env.DATABASE_POSTGRES = 'postgres://notigwcnqrepgs:c5a77c2bc47a3836c8e63c0d1a2df5e652f333776ff1ec79af780021d73213f0@ec2-52-87-58-157.compute-1.amazonaws.com:5432/d9pap1thvs0547'

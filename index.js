@@ -49,6 +49,10 @@ app.get('/Users', async (req, res) => {
         res.json(Users)
     } catch (err) {
         res.status(500)
+        res.json({
+            ok: false
+            err: err
+        })
     }
 })
 

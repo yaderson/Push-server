@@ -4,8 +4,7 @@ require('../config.js')
 
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_POSTGRES,
-    ssl: false
+    connectionString: process.env.DATABASE_POSTGRES
 })
 
 module.exports = pool
