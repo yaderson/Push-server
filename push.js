@@ -36,9 +36,10 @@ async function addSubscription (subscription, condition) {
 
 async function sendPush (post) {
     const subs = await pool.query('SELECT * FROM subs')
-    const ResultToUpdate = await fetch('https://api.covid19api.com/summary')
-    console.log(ResultToUpdate)
-    ResultToUpdate.Countries.forEach((result) => {
+    console.log(subs)
+    const Result = await fetch('https://api.covid19api.com/summary')
+    const res = await Result.json()
+    res.Countries.forEach((result) => {
         console.log(result)
     })
 
