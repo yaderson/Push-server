@@ -73,14 +73,18 @@ app.get('/Create', async (req, res) => {
 })
 
 app.post('/Push', async(req, res) => {
-    const body = req.body
-    const notify = {
-        title: body.title,
-        body: body.body,
-        user: body.user
+    try {
+        await sendPush()
+        res.json({
+            ok: true
+        })
+    } catch (err) {
+        res.status(500)
+        res.json({
+            ok: false,
+            err
+        })
     }
-    await sendPush(notify)
-    res.send(notify)
 })
 
 const port  = process.env.PORT || 80

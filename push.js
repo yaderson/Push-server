@@ -34,19 +34,28 @@ async function addSubscription (subscription, condition) {
     return result
 }
 
-async function sendPush (post) {
+async function sendPush () {
     const subs = await pool.query('SELECT * FROM subs')
     console.log(subs)
     const Result = await fetch('https://api.covid19api.com/summary')
     const res = await Result.json()
-    res.Countries.forEach((result) => {
-        //console.log(result)
-    })
 
-    // db.forEach((subscription, i) => {
-    //     webpush.sendNotification(subscription, JSON.stringify(post))
-    //     console.log('SEND')
-    // })
+    subs.rows.forEach((subscriber, i) => {
+
+        const data = res.find(element => element.Slug === subscriber.pushcondition)
+        
+
+        const notify = {
+            title: `New Update For ${data.Country}`,
+            body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
+            user: 'None',
+            slug: data.Slug
+        }
+
+        webpush.sendNotification(subscription, JSON.stringify(subscriber.subscriptionobject))
+        console.log(`Send data to USER ${i}, County ${subscriber.pushcondition}`)
+        return 0
+    })
 }
 
 async function getAllSuscribeUsers () {
