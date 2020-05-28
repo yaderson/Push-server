@@ -51,7 +51,7 @@ app.get('/Users', async (req, res) => {
         res.status(500)
         res.json({
             ok: false
-            err: err
+            err
         })
     }
 })
