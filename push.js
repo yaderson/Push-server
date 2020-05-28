@@ -1,7 +1,7 @@
 const vapid = require('./vapid.json')
 const webpush = require('web-push')
 const urlsafeBase64 = require('urlsafe-base64')
-
+const fs = require('fs')
 const Pool = require('pg').Pool
 
 const pool = require('./pool')
@@ -35,11 +35,18 @@ async function addSubscription (subscription, condition) {
     return result
 }
 
-function sendPush (post) {
-    db.forEach((subscription, i) => {
-        webpush.sendNotification(subscription, JSON.stringify(post))
-        console.log('SEND')
+async function sendPush (post) {
+    const subs = await pool.query('SELECT * FROM subs')
+    const ResultToUpdate = await fetch('https://api.covid19api.com/summary')
+
+    ResultToUpdate.forEach((result) => {
+        console.log(result)
     })
+
+    // db.forEach((subscription, i) => {
+    //     webpush.sendNotification(subscription, JSON.stringify(post))
+    //     console.log('SEND')
+    // })
 }
 
 async function getAllSuscribeUsers () {
@@ -60,5 +67,6 @@ module.exports = {
     getKey,
     addSubscription,
     getAllSuscribeUsers,
-    create
+    create,
+    sendPush
 }

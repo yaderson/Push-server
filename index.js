@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getKey, addSubscription, getAllSuscribeUsers, create } = require('./push.js')
+const { getKey, addSubscription, getAllSuscribeUsers, create, sendPush } = require('./push.js')
 
 const app = express()
 
@@ -72,16 +72,16 @@ app.get('/Create', async (req, res) => {
     }
 })
 
-// app.post('/Push',(req, res) => {
-//     const body = req.body
-//     const notify = {
-//         title: body.title,
-//         body: body.body,
-//         user: body.user
-//     }
-//     push.sendPush(notify)
-//     res.send(notify)
-// })
+app.post('/Push', async(req, res) => {
+    const body = req.body
+    const notify = {
+        title: body.title,
+        body: body.body,
+        user: body.user
+    }
+    await sendPush(notify)
+    res.send(notify)
+})
 
 const port  = process.env.PORT || 80
 
