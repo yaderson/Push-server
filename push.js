@@ -82,7 +82,7 @@ function getKey () {
     return urlsafeBase64.decode(vapid.publicKey)
 }
 async function create () {
-    const result = await pool.query(queries.tableSubs)
+    const result = await pool.query('DELETE FROM subs *')
     return result
 }
 module.exports = {
