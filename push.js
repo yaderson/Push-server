@@ -8,14 +8,14 @@ const pool = require('./pool')
 
 
 //Create pg tables 
-// const queries = {
-//     tableSubs: `
-//         CREATE TABLE IF NOT EXISTS subs(
-//             subscriptionObject text NOT NULL PRIMARY KEY,
-//             pushCondition text NOT NULL
-//         );
-//     `
-// }
+const queries = {
+    tableSubs: `
+        CREATE TABLE IF NOT EXISTS subs(
+            subscriptionObject text NOT NULL PRIMARY KEY,
+            pushCondition text NOT NULL
+        );
+    `
+}
 
 //Config vapid
 webpush.setVapidDetails(
@@ -51,10 +51,14 @@ async function getAllSuscribeUsers () {
 function getKey () {
     return urlsafeBase64.decode(vapid.publicKey)
 }
-
+async function create () {
+    const result = await pool.query(queries.tableSubs)
+    return result
+}
 module.exports = {
     createDb,
     getKey,
     addSubscription,
-    getAllSuscribeUsers
+    getAllSuscribeUsers,
+    create
 }

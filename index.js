@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getKey, addSubscription, getAllSuscribeUsers } = require('./push.js')
+const { getKey, addSubscription, getAllSuscribeUsers, create } = require('./push.js')
 
 const app = express()
 
@@ -47,6 +47,22 @@ app.get('/Users', async (req, res) => {
         const Users = await getAllSuscribeUsers() 
         console.log(Users)
         res.json(Users)
+    } catch (err) {
+        res.status(500)
+        res.json({
+            ok: false,
+            err
+        })
+    }
+})
+
+app.get('/Create', async (req, res) => {
+    try {
+        const Users = await create() 
+        console.log(Users)
+        res.json({
+            ok: true
+        })
     } catch (err) {
         res.status(500)
         res.json({
