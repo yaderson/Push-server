@@ -47,7 +47,7 @@ async function sendPush () {
             
             if(data){
                 const notify = {
-                    title: `New Update For ${data.Country}`,
+                    title: `New Update For ${data.Country} ${new Date(data.Date).toLocaleDateString('en-US',{ day : 'numeric', month : 'short', hour: 'numeric', minute: 'numeric' })}`,
                     body: `New Cases Confirmed ${data.NewConfirmed}, New Recovered ${data.NewRecovered} & New Deaths ${data.NewDeaths} - Total Confirmed ${data.TotalConfirmed}, Total Deaths ${data.TotalDeaths}, Total Recovered ${data.TotalRecovered} Click or tap To see more info...`,
                     user: 'None',
                     slug: data.Slug
