@@ -43,7 +43,7 @@ async function sendPush () {
         subs.rows.forEach((subscriber, i) => {
             console.log(subscriber)
 
-            const data = res.find(element => element.Slug === subscriber.pushcondition)
+            const data = res.Countries.find(element => element.Slug === subscriber.pushcondition)
             
             if(data){
                 const notify = {
